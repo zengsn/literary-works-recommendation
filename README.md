@@ -1,2 +1,4 @@
-# name-crawler-java
-Chinese name crawler written by Java
+# 文学名著文段搜索与推荐系统
+## 1. 输入关键字检查文学名著内容
+
+## 2. 根据网络时新话题推荐文学内容
