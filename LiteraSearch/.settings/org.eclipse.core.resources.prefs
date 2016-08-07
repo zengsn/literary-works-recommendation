@@ -1,0 +1,11 @@
+#Sun Aug 07 15:33:53 CST 2016
+eclipse.preferences.version=1
+encoding//src/com/crawl/tianya/model/CrawlListInfo.java=UTF-8
+encoding//src/com/lucene/demo/IndexCreate.java=UTF-8
+encoding//src/com/lucene/demo/IndexSearch.java=UTF-8
+encoding//src/com/lucene/index/manager/IndexManager.java=UTF-8
+encoding//src/com/lucene/index/model/IndexConfig.java=UTF-8
+encoding//src/com/lucene/index/model/LiteraSearchResultBean.java=UTF-8
+encoding//src/com/lucene/index/model/SearchResultBean.java=UTF-8
+encoding//src/com/lucene/index/operation/NRTIndex.java=UTF-8
+encoding//src/com/lucene/index/operation/NRTSearch.java=UTF-8
