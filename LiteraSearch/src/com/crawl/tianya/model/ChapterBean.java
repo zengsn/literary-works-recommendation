@@ -1,7 +1,7 @@
 package com.crawl.tianya.model;
 
 /**
- * 存储章节列表获取到的信息：章节标题，章节对应的阅读页的url，章节的序号
+ * 存储章节列表获取到的信息：章节标题，章节对应的阅读页的url，章节的序号等
  * 
  * @author CJP
  * 

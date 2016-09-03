@@ -18,8 +18,8 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
-import com.lucene.index.model.ConfigBean;
 import com.lucene.index.model.IndexConfig;
+import com.lucene.index.model.ConfigBean;
 
 /**
  * 实时索引管理类，需要是单例模式，一个索引配置对应一个索引管理
@@ -35,7 +35,7 @@ public class IndexManager {
 	private TrackingIndexWriter trackingIndexWriter;
 	// IndexWriter的代理类，由它来完成索引的增加、删除、修改
 
-	// private Analyzer analyzer;
+	private Analyzer analyzer;
 
 	private NRTManager nrtManager;
 	// 管理内存索引、合并索引、硬盘索引，实现内存索引写入到硬盘索引，对外提供一个可用的IndexSearcher
@@ -47,8 +47,6 @@ public class IndexManager {
 	// 内存索引写入到硬盘索引线程
 
 	private ConfigBean ConfigBean;// 索引配置类
-	
-	private Analyzer analyzer;
 
 	private static class LazyIndexManager {
 		// 保存系统中的IndexManager对象
@@ -188,11 +186,6 @@ public class IndexManager {
 	public Analyzer getAnalyzer() {
 		return analyzer;
 	}
-
-	public void setAnalyzer(Analyzer analyzer) {
-		this.analyzer = analyzer;
-	}
-	
 	
 
 }

@@ -1,76 +1,78 @@
 package com.util;
 
+import java.sql.ResultSet;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.IntField;
+import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.document.Field.Store;
 
-import com.crawl.tianya.model.IntroSearchResultBean;
-import com.lucene.index.model.IntroIndexBean;
+import com.crawl.tianya.model.Para;
+import com.db.manager.DBServer;
 
-/**
- * 转化Bean与Document
- * 
- * @author CJP
- * 
- */
 public class ParseBean {
 
-	/**
-	 * 将简介表中获取到的数据添加到Document中
-	 */
-	public static Document parseIntroToDoc(IntroIndexBean bean) {
-		if (bean == null) {
+	public static Document bean2doc(Para para) {
+		if (para == null) {
 			return null;
 		}
 		Document doc = new Document();
-		if (bean.getId() != null) {
-			doc.add(new StringField(IntroIndexBean.ID, bean.getId(), Store.YES));
+		if (para.getPara() != null) {
+			doc.add(new TextField(Para.PARA, para.getPara(), Store.YES));
 		} else {
 			return null;
 		}
-		if (bean.getName() != null) {
-			// 书名为一个整体
-			doc.add(new StringField(IntroIndexBean.NAME, bean.getName(),
+		if (para.getAuthor() != null)
+			doc.add(new StringField(Para.AUTHOR, para.getAuthor(), Store.YES));
+		if (para.getName() != null)
+			doc.add(new StringField(Para.NAME, para.getName(), Store.YES));
+		if (para.getChaptername() != null) {
+			doc.add(new StringField(Para.CHAPTERNAME, para.getChaptername(),
 					Store.YES));
-			// 书名切分
-			doc.add(new TextField(IntroIndexBean.NAME_KEY, bean.getName(),
-					Store.YES));
-		}
-		if (bean.getAuthor() != null) {
-			// 作者为一个整体
-			doc.add(new StringField(IntroIndexBean.AUTHOR, bean.getAuthor(),
-					Store.YES));
-			// 作者切分
-			doc.add(new TextField(IntroIndexBean.AUTHOR_KEY, bean.getAuthor(),
-					Store.YES));
-		}
-		if (bean.getDesc() != null) {
-			doc.add(new StringField(IntroIndexBean.DESC, bean.getDesc(),
-					Store.YES));
-		}
-		if (bean.getChapterCount() > 0) {
-			doc.add(new IntField(IntroIndexBean.CHAPTERCOUNT, bean
-					.getChapterCount(), Store.YES));
 		}
 		return doc;
 	}
 
-	/**
-	 * 将获取到的Document转化为Bean
-	 */
-	public static IntroSearchResultBean parseDocToBean(Document doc) {
+	public static Para doc2bean(Document doc) {
 		if (doc == null) {
 			return null;
 		}
-		IntroSearchResultBean bean = new IntroSearchResultBean();
-		bean.setId(doc.get(IntroIndexBean.ID));
-		bean.setName(doc.get(IntroIndexBean.NAME));
-		bean.setAuthor(doc.get(IntroIndexBean.AUTHOR));
-		bean.setChaptercount(Integer.parseInt(doc
-				.get(IntroIndexBean.CHAPTERCOUNT)));
-		bean.setDesc(doc.get(IntroIndexBean.DESC));
-		return bean;
+		Para para = new Para();
+		para.setAuthor(doc.get("author"));
+		para.setName(doc.get("name"));
+		para.setChaptername(doc.get("chaptername"));
+		para.setPara(doc.get("para"));
+		return para;
+	}
+
+	public static List<String> splitContent(String content) {
+		if (content == null) {
+			return null;
+		}
+		content = content.replaceAll("&nbsp;&nbsp;&nbsp;&nbsp;", "")
+				.replaceAll("<br />", "").replaceAll("\\n{2,}", "\n");
+		List<String> paras = Arrays.asList(content.split("\n"));
+		return paras;
+	}
+
+	public static void main(String[] args) throws Exception {
+		DBServer dbServer = new DBServer("proxool.tianya");
+		ResultSet rs = dbServer
+				.select("select name,author,title,content from crawlchapterdetail limit 0,1");
+		while (rs.next()) {
+			List<String> paras = ParseBean
+					.splitContent(rs.getString("content"));
+			String name = rs.getString("name");
+			String author = rs.getString("author");
+			String chaptername = rs.getString("title");
+			for (String p : paras) {
+				Para para = new Para(author, name, chaptername, p);
+				Document doc = ParseBean.bean2doc(para);
+				Para pa = ParseBean.doc2bean(doc);
+				System.out.println(pa);
+			}
+		}
 	}
 }

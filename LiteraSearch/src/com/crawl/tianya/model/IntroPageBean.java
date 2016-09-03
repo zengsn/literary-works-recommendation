@@ -1,5 +1,6 @@
 package com.crawl.tianya.model;
 
+
 /**
  * 存储简介页获取到的信息：名著的作者，名著简介，名著章节的信息
  * 

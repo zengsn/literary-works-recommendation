@@ -3,6 +3,7 @@
     <wb-module deploy-name="LiteraSearch">
         <wb-resource deploy-path="/" source-path="/WebRoot"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/res"/>
         <property name="context-root" value="/LiteraSearch"/>
         <property name="java-output-path" value="/LiteraSearch/WebRoot/WEB-INF/classes"/>
     </wb-module>

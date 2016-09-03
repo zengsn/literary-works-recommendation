@@ -1,5 +1,7 @@
-#Sun Aug 07 15:33:53 CST 2016
+#Sat Sep 03 16:52:01 CST 2016
 eclipse.preferences.version=1
+encoding//res/ext_dict.dic=UTF-8
+encoding//res/ext_stopwords.dic=UTF-8
 encoding//src/com/crawl/tianya/model/CrawlListInfo.java=UTF-8
 encoding//src/com/lucene/demo/IndexCreate.java=UTF-8
 encoding//src/com/lucene/demo/IndexSearch.java=UTF-8
