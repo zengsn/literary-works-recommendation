@@ -4,8 +4,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-  <display-name></display-name>	
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
+  <servlet>
+    <servlet-name>LiteraServlet</servlet-name>
+    <servlet-class>com.search.action.LiteraServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>LiteraServlet</servlet-name>
+    <url-pattern>/LiteraServlet</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

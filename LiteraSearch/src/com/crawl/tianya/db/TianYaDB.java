@@ -8,11 +8,12 @@ import java.util.List;
 import com.crawl.tianya.model.ChapterBean;
 import com.crawl.tianya.model.CrawlListInfo;
 import com.crawl.tianya.model.IntroPageBean;
+import com.crawl.tianya.model.Para;
 import com.crawl.tianya.model.ReadPageBean;
 import com.db.manager.DBServer;
-import com.lucene.index.model.IntroIndexBean;
-import com.lucene.index.operation.litera.IntroIndex;
+import com.lucene.index.operation.tianya.TianYaIndex;
 import com.util.JsonUtil;
+import com.util.ParseBean;
 import com.util.ParseMD5;
 
 /**
@@ -26,19 +27,17 @@ public class TianYaDB {
 	// 数据库连接池的别名
 	private static final String POOLNAME = "proxool.tianya";
 
-	/*
-	 * // 使用DBserver实现数据库操作模板 
-	 * public void method() { 
-	 * 	DBServer dbServer = new DBServer(POOLNAME); 
-	 * 	try {
-	 * 
-	 * 	} catch (Exception e) { 
-	 * 		e.printStackTrace(); 
-	 * 	} finally {
-	 * 		dbServer.close(); 
-	 * 	} 
-	 * }
-	 */
+	/*// 使用DBserver实现数据库操作模板
+	public void method() {
+		DBServer dbServer = new DBServer(POOLNAME);
+		try {
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbServer.close();
+		}
+	}*/
 
 	/**
 	 * 获取crawllist表中数据，测试数据库连接是否正常
@@ -420,23 +419,26 @@ public class TianYaDB {
 		return true;
 	}
 
-	/**
-	 * 获取数据库中简介表中的数据，将其导入索引中
-	 */
-	public void dataImportToIndex() {
+	// ---------------- crawlchapterdetail表数据存储操作 ------------------
+
+	public void dataImport2Index() {
 		DBServer dbServer = new DBServer(POOLNAME);
 		try {
-			String sql = "SELECT * FROM crawlintro";
+			String sql = "select name,author,title,content from crawlchapterdetail";
 			ResultSet rs = dbServer.select(sql);
-			while (rs.next()) {
-				IntroIndexBean bean = new IntroIndexBean();
-				bean.setId(rs.getString("id"));
-				bean.setName(rs.getString("name"));
-				bean.setAuthor(rs.getString("author"));
-				bean.setDesc(rs.getString("description"));
-				bean.setChapterCount(Integer.parseInt(rs
-						.getString("chaptercount")));
-				new IntroIndex().addIntroIndex(bean);
+			while(rs.next()){
+				String name = rs.getString("name");
+				String author = rs.getString("author");
+				String chaptername = rs.getString("title");
+				List<String> paras = ParseBean.splitContent(rs.getString("content"));
+				for(String p:paras){
+					Para para = new Para();
+					para.setAuthor(author);
+					para.setName(name);
+					para.setChaptername(chaptername);
+					para.setPara(p);
+					new TianYaIndex().addLiteraIndex(para);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -444,9 +446,6 @@ public class TianYaDB {
 			dbServer.close();
 		}
 	}
-
-	// ---------------- crawlchapterdetail表数据存储操作 ------------------
-
 	public static void main(String[] args) {
 
 		TianYaDB db = new TianYaDB();
