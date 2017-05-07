@@ -1,0 +1,42 @@
+body {
+	/* background-image: url(../img/bg.jpg); */
+	no-repeat:fixed;
+	background:over;
+}
+
+p {
+	font-family: '楷体';
+	font-size: 30px;
+	font-weight: bolder;
+}
+
+input {
+	float: left;
+	/*让input紧靠*/
+	border: 1px solid #2e6da4;
+	padding: 0px;
+	margin: 0px;
+}
+
+.searchKeywords {
+	outline: none;
+	/*获得焦点时无边框*/
+	padding-left: 10px;
+	/*光标初始位置向后移10px*/
+	border-radius: 4px 0 0 4px;
+}
+
+.searchButton {
+	margin-left: -1px;
+	border-radius: 0 4px 4px 0;
+	color: white;
+	background-color: #337AB7;
+}
+
+.inputFocus {
+	background-color: azure;
+}
+
+.inputBlur {
+	
+}
